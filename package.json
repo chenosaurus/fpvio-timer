@@ -1,0 +1,23 @@
+{
+  "name": "fpvio-timer",
+  "version": "0.0.1",
+  "description": "fpv.io timer interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chenosaurus/fpvio-timer.git"
+  },
+  "author": "David Chen <david@chenosaurus.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chenosaurus/fpvio-timer/issues"
+  },
+  "homepage": "https://github.com/chenosaurus/fpvio-timer#readme",
+  "dependencies": {
+    "serialport": "^7.0.2"
+  }
+}
