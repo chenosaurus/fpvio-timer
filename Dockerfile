@@ -26,7 +26,10 @@ RUN npm -v
 RUN echo "alias ll='ls -lG'" >> /root/.bashrc
 
 RUN mkdir -p /root/workspace
+RUN mkdir -p /root/.ssh
 WORKDIR /root/workspace
+
+RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 RUN git clone git@github.com:chenosaurus/fpvio-timer.git \
   && cd fpvio-timer \
