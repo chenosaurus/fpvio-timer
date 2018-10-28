@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/chenosaurus/fpvio-timer#readme",
   "dependencies": {
-    "serialport": "^7.0.2"
+    "buffer-reverse": "^1.0.1",
+    "crc16": "^1.0.1",
+    "serialport": "^7.0.2",
+    "stream-parser": "^0.3.1",
+    "yargs": "^12.0.2"
   }
 }
