@@ -25,20 +25,15 @@ RUN npm -v
 # add alias for ll
 RUN echo "alias ll='ls -lG'" >> /root/.bashrc
 
-RUN mkdir -p /root/workspace
+RUN mkdir -p /root/fpvio-timer
 RUN mkdir -p /root/.ssh
-WORKDIR /root/workspace
-
-RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-RUN git clone git@github.com:chenosaurus/fpvio-timer.git \
-  && cd fpvio-timer \
-  && npm install
 
 
-ARG RTK_ENGINE_VERSION=v1.1.3
-RUN git clone  -b $RTK_ENGINE_VERSION --single-branch git@github.com:Skycatch/rtk-engine.git --depth 1 \
-    && cd rtk-engine \
-    && npm --verbose install -g .
+COPY package.json /root/fpvio-timer/
+COPY index.js /root/fpvio-timer/
+
+WORKDIR /root/fpvio-timer
+
+RUN npm i
 
 CMD ["npm", "start"]
