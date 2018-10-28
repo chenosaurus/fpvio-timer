@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
     build-essential \
     ca-certificates \
     curl \
+    minicom \
     libssl-dev
 
 # update the repository sources list
@@ -25,6 +26,8 @@ RUN echo "alias ll='ls -lG'" >> /root/.bashrc
 
 RUN mkdir -p /root/workspace
 WORKDIR /root/workspace
+
+RUN ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 RUN git clone git@github.com:chenosaurus/fpvio-timer.git \
   && cd fpvio-timer \
