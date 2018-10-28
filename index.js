@@ -38,17 +38,14 @@ function startStream() {
 
       timerPort.pipe(txPort);
       txPort.pipe(timerPort);
+
+      streaming = true;
+
+      console.log('streaming timer to tx');
     })
 
   })
 
-  let port = new SerialPort(argv.p, {
-  baudRate: baudRate
-}, function (err) {
-  if (err) {
-    console.log('error opening port', err);
-  }
-});
 }
 
 function scanPorts() {
