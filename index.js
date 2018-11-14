@@ -3,7 +3,7 @@
 const SerialPort = require('serialport');
 
 const kScanInterval = 5 * 1000;
-const kTimerBaud = 38400;
+const kTimerBaud = 115200;
 const kTxBaud = 115200;
 
 let hasTimer = false;
