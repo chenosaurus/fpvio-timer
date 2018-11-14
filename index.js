@@ -61,7 +61,7 @@ function scanPorts() {
 
     for (const port of ports) {
 
-      if (port.manufacturer == 'ImmersionRC') {
+      if (port.manufacturer == 'STMicroelectronics' || port.manufacturer == 'ImmersionRC') {
         hasTimer = true
         timerPortName = port.comName
         console.log(`Timer detected on ${timerPortName}`)
