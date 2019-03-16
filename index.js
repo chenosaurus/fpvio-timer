@@ -1,47 +1,48 @@
 'use strict';
 
+const Net = require('net')
 const SerialPort = require('serialport');
 
 const kScanInterval = 5 * 1000;
 const kTimerBaud = 115200;
 const kTxBaud = 115200;
+const kTimerIP = '192.168.1.9'
+const kTimerPort = 5403
 
 let hasTimer = false;
 let hasTx = false;
 
-let timerPortName, txPortName, timerPort, txPort;
+let timerPortName, txPortName, timerPort, txPort, timerClient;
 
 let streaming = false;
 
 function startStream() {
-  console.log(`opening timer port`)
-  timerPort = new SerialPort(timerPortName, {
-    baudRate: kTimerBaud
-  }, (err) => {
-    if (err) {
-      console.log(`error opening ${timerPortName}`, err);
-      process.exit(1);
-    }
+  console.log(`opening timer tcp port`)
 
-    console.log(`opened timer port ${timerPortName}`)
+  timerClient = Net.connect({
+      host: kTimerIP,
+      port: kTimerPort
+    }, () => {
+      console.log('connected to timer')
+      // connected to timer tcp port
+      console.log(`opening tx port`)
+      txPort = new SerialPort(txPortName, {
+        baudRate: kTxBaud
+      }, (err) => {
+        if (err) {
+          console.log(`error opening ${txPortName}`, err);
+          process.exit(1);
+        }
 
-    console.log(`opening tx port`)
-    txPort = new SerialPort(txPortName, {
-      baudRate: kTxBaud
-    }, (err) => {
-      if (err) {
-        console.log(`error opening ${txPortName}`, err);
-        process.exit(1);
-      }
+        console.log(`opened tx port ${txPortName}`)
 
-      console.log(`opened tx port ${txPortName}`)
+        timerClient.pipe(txPort);
+        txPort.pipe(timerClient);
 
-      timerPort.pipe(txPort);
-      txPort.pipe(timerPort);
+        streaming = true;
 
-      streaming = true;
-
-      console.log('streaming timer to tx');
+        console.log('streaming timer to tx');
+      })
     })
 
   })
@@ -50,7 +51,7 @@ function startStream() {
 
 function scanPorts() {
 
-  if (hasTimer && hasTx) {
+  if (hasTx) {
     if (!streaming) {
       startStream();
     }
@@ -61,11 +62,11 @@ function scanPorts() {
 
     for (const port of ports) {
 
-      if (port.manufacturer == 'STMicroelectronics' || port.manufacturer == 'ImmersionRC') {
-        hasTimer = true
-        timerPortName = port.comName
-        console.log(`Timer detected on ${timerPortName}`)
-      }
+      // if (port.manufacturer == 'STMicroelectronics' || port.manufacturer == 'ImmersionRC') {
+      //   hasTimer = true
+      //   timerPortName = port.comName
+      //   console.log(`Timer detected on ${timerPortName}`)
+      // }
 
       if (port.manufacturer == 'FTDI') {
         hasTx = true
